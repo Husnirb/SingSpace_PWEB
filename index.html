@@ -2,75 +2,155 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SingSpace Karaoke</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
-        <h1>🎤 SingSpace Karaoke</h1>
-        <p>Private Room Reservation System</p>
-        <image src="Logo SingSpace.png" style="height: 50px;"></image>
-    </header>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="Logo SingSpace.png" alt="Logo SingSpace" class="logo-img">
+        </div>
 
-    <nav>
-        <ul>
+        <ul class="nav-menu">
             <li><a href="#">Home</a></li>
             <li><a href="#">Daftar Ruangan</a></li>
             <li><a href="#">Reservasi</a></li>
             <li><a href="#">Kontak</a></li>
         </ul>
     </nav>
+</header>
 
-    <main>
+<section class="hero">
+    <div class="hero-content">
+        <h1><span class="text-white">SingSpace</span> Karaoke</h1>
 
-        <aside>
-            <h3>📊 Statistik SingSpace</h3>
-            <p>Total Ruangan: 10</p>
-            <p>Total Reservasi Hari Ini: 5</p>
-            <p>Ruangan VIP Tersedia: 3</p>
-            <p>Ruangan VVIP Tersedia: 2</p>
-        </aside>
+        <p class="hero-desc">
+            Jadikan setiap momen bernyanyimu lebih spektakuler di SingSpace! Nikmati atmosfer hiburan kelas atas dengan privasi maksimal di ruang VIP dan VVIP eksklusif kami. Amankan tempatmu hanya dalam hitungan detik. 
+            Pesan sekarang dan mulai bernyanyi!
+        </p>
 
-        <section>
-            <h2>Form Reservasi Karaoke</h2>
+        <button class="cta-btn">Booking Sekarang</button>
+    </div>
+</section>
 
-            <form>
-                <label>Nama Lengkap:</label><br>
-                <input type="text" name="nama"><br><br>
+<div class="container">
 
-                <label>Email:</label><br>
-                <input type="email" name="email"><br><br>
+<aside class="sidebar">
+        <h3 class="sidebar-title">🔍 Filter Fasilitas</h3>
+        <div class="filter-group">
+            <label class="custom-checkbox">
+                <input type="checkbox" name="fasilitas" value="ac"> 
+                <span class="checkmark"></span>
+                <span class="label-text">Extra Mic</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="fasilitas" value="wifi"> 
+                <span class="checkmark"></span>
+                <span class="label-text">Free WiFi</span>
+            </label>
+            <label class="custom-checkbox">
+                <input type="checkbox" name="fasilitas" value="makanan"> 
+                <span class="checkmark"></span>
+                <span class="label-text">Free Snack</span>
+            </label>
+        </div>
 
-                <label>Nomor Telepon:</label><br>
-                <input type="tel" name="telepon"><br><br>
+        <h3 class="sidebar-title mt-4">📊 Statistik Hari Ini</h3>
+        <div class="stat-grid">
+            <div class="stat-box">
+                <span class="stat-value">10</span>
+                <span class="stat-label">Total Ruangan</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">5</span>
+                <span class="stat-label">Reservasi</span>
+            </div>
+            <div class="stat-box ready-vip">
+                <span class="stat-value text-orange">3</span>
+                <span class="stat-label">VIP Ready</span>
+            </div>
+            <div class="stat-box ready-vvip">
+                <span class="stat-value text-orange">2</span>
+                <span class="stat-label">VVIP Ready</span>
+            </div>
+        </div>
+    </aside>
 
-                <label>Pilih Ruangan:</label><br>
-                <select name="ruangan">
-                    <option>VIP Room</option>
-                    <option>VVIP Room</option>
-                </select><br><br>
+    <main class="content">
 
-                <label>Tanggal Reservasi:</label><br>
-                <input type="date" name="tanggal"><br><br>
+        <section class="room-section">
+            <h2>Daftar Ruangan</h2>
 
-                <label>Jam Mulai:</label><br>
-                <input type="time" name="jam"><br><br>
+            <div class="room-grid">
+                <div class="room-card">Regular Room</div>
+                <div class="room-card">Family Room</div>
+                <div class="room-card">VIP Room</div>
+                <div class="room-card">VVIP Room</div>
+            </div>
+        </section>
 
-                <label>Durasi (jam):</label><br>
-                <input type="number" name="durasi"><br><br>
+        <section class="form-section">
+            <h2>Form Reservasi</h2>
 
-                <label>Catatan Tambahan:</label><br>
-                <textarea name="catatan"></textarea><br><br>
+            <form class="booking-form" action="#" method="POST">
+                <div class="form-group">
+                    <label for="nama">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telepon">Nomor Telepon</label>
+                    <input type="tel" id="telepon" name="telepon" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ruangan">Ruangan</label>
+                    <select id="ruangan" name="ruangan" required>
+                        <option value="">-- Pilih Ruangan --</option>
+                        <option value="regular">Regular Room</option>
+                        <option value="family">Family Room</option>
+                        <option value="vip">VIP Room</option>
+                        <option value="vvip">VVIP Room</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="jam">Jam</label>
+                    <input type="time" id="jam" name="jam" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="durasi">Durasi (Jam)</label>
+                    <input type="number" id="durasi" name="durasi" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="catatan">Catatan (Opsional)</label>
+                    <textarea id="catatan" name="catatan"></textarea>
+                </div>
 
                 <button type="submit">Booking Sekarang</button>
             </form>
         </section>
 
-        <section>
-            <h2>Data Reservasi Hari Ini</h2>
+        <section class="table-section">
+            <h2>Data Reservasi</h2>
 
-            <table border="1">
+            <table>
                 <thead>
                     <tr>
                         <th>Nama</th>
@@ -85,7 +165,7 @@
                     <tr>
                         <td>Andi</td>
                         <td>VIP</td>
-                        <td>05-03-2026</td>
+                        <td>28-03-2026</td>
                         <td>18:00</td>
                         <td>2 jam</td>
                         <td>Confirmed</td>
@@ -93,9 +173,33 @@
                     <tr>
                         <td>Sinta</td>
                         <td>VVIP</td>
-                        <td>05-03-2026</td>
+                        <td>28-03-2026</td>
                         <td>20:00</td>
                         <td>3 jam</td>
+                        <td>Pending</td>
+                    </tr>
+                    <tr>
+                        <td>Budi</td>
+                        <td>Family</td>
+                        <td>29-03-2026</td>
+                        <td>14:00</td>
+                        <td>2 jam</td>
+                        <td>Confirmed</td>
+                    </tr>
+                    <tr>
+                        <td>Citra</td>
+                        <td>Regular</td>
+                        <td>29-03-2026</td>
+                        <td>16:00</td>
+                        <td>1 jam</td>
+                        <td>Cancelled</td>
+                    </tr>
+                    <tr>
+                        <td>Dimas</td>
+                        <td>VIP</td>
+                        <td>30-03-2026</td>
+                        <td>19:00</td>
+                        <td>2 jam</td>
                         <td>Pending</td>
                     </tr>
                 </tbody>
@@ -103,12 +207,40 @@
         </section>
 
     </main>
+</div>
 
-    <footer>
-        <p>&copy; 2026 SingSpace Karaoke</p>
-        <p>Sistem Informasi Reservasi Karaoke Berbasis Web</p>
-        <p>Email: info@singspace.com | Telp: 0812-3456-7890</p>
-    </footer>
+<footer class="footer">
+    <div class="footer-col">
+        <img src="Logo SingSpace.png" alt="Logo SingSpace" class="footer-logo">
+        <p class="footer-desc">
+            Destinasi hiburan premium untuk momen bernyanyi tak terlupakan. SingSpace menghadirkan ruang karaoke eksklusif dengan fasilitas audio kelas atas dan privasi maksimal.
+        </p>
+    </div>
+
+    <div class="footer-col">
+        <h4>Navigasi</h4>
+        <ul class="footer-links">
+            <li><a href="#">Beranda</a></li>
+            <li><a href="#">Daftar Ruangan</a></li>
+            <li><a href="#">Cek Reservasi</a></li>
+            <li><a href="#">Syarat & Ketentuan</a></li>
+        </ul>
+    </div>
+
+    <div class="footer-col">
+        <h4>Hubungi Kami</h4>
+        <ul class="footer-contact">
+            <li>📍 Jl. Moh. Yamin No. 5, Jember, Jawa Timur</li>
+            <li>📞 +62 81246841249</li>
+            <li>✉️ singspace@gmail.com</li>
+            <li>🕒 Buka: 10:00 - 02:00 WIB</li>
+        </ul>
+    </div>
+</footer>
+
+<div class="footer-bottom">
+    <p>&copy; 2026 SingSpace Karaoke. All rights reserved.</p>
+</div>
 
 </body>
 </html>
