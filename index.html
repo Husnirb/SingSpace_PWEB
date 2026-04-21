@@ -40,42 +40,43 @@
 <div class="container">
 
 <aside class="sidebar">
-        <h3 class="sidebar-title">🔍 Filter Fasilitas</h3>
+        <h3 class="sidebar-title">🔍 Filter Reservasi</h3>
         <div class="filter-group">
-            <label class="custom-checkbox">
-                <input type="checkbox" name="fasilitas" value="ac"> 
-                <span class="checkmark"></span>
-                <span class="label-text">Extra Mic</span>
-            </label>
-            <label class="custom-checkbox">
-                <input type="checkbox" name="fasilitas" value="wifi"> 
-                <span class="checkmark"></span>
-                <span class="label-text">Free WiFi</span>
-            </label>
-            <label class="custom-checkbox">
-                <input type="checkbox" name="fasilitas" value="makanan"> 
-                <span class="checkmark"></span>
-                <span class="label-text">Free Snack</span>
-            </label>
+            <label class="label-text" style="color: var(--text-muted); margin-bottom: 5px; display: block;">Ruangan:</label>
+            <select id="filterRuangan" style="margin-bottom: 15px; padding: 8px; border-radius: 6px; background: var(--bg-deep-navy); color: white; border: 1px solid var(--border-color); width: 100%;">
+                <option value="All">Semua Ruangan</option>
+                <option value="regular">Regular Room</option>
+                <option value="family">Family Room</option>
+                <option value="vip">VIP Room</option>
+                <option value="vvip">VVIP Room</option>
+            </select>
+
+            <label class="label-text" style="color: var(--text-muted); margin-bottom: 5px; display: block;">Status:</label>
+            <select id="filterStatus" style="padding: 8px; border-radius: 6px; background: var(--bg-deep-navy); color: white; border: 1px solid var(--border-color); width: 100%;">
+                <option value="All">Semua Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
         </div>
 
         <h3 class="sidebar-title mt-4">📊 Statistik Hari Ini</h3>
         <div class="stat-grid">
             <div class="stat-box">
-                <span class="stat-value">10</span>
-                <span class="stat-label">Total Ruangan</span>
+                <span class="stat-value" id="statTotal">0</span>
+                <span class="stat-label">Total Reservasi</span>
             </div>
             <div class="stat-box">
-                <span class="stat-value">5</span>
-                <span class="stat-label">Reservasi</span>
+                <span class="stat-value" id="statConfirmed">0</span>
+                <span class="stat-label">Confirmed</span>
             </div>
             <div class="stat-box ready-vip">
-                <span class="stat-value text-orange">3</span>
-                <span class="stat-label">VIP Ready</span>
+                <span class="stat-value text-orange" id="statPending">0</span>
+                <span class="stat-label">Pending</span>
             </div>
             <div class="stat-box ready-vvip">
-                <span class="stat-value text-orange">2</span>
-                <span class="stat-label">VVIP Ready</span>
+                <span class="stat-value text-orange" id="statVipVvip">0</span>
+                <span class="stat-label">VIP/VVIP</span>
             </div>
         </div>
     </aside>
@@ -96,7 +97,11 @@
         <section class="form-section">
             <h2>Form Reservasi</h2>
 
-            <form class="booking-form" action="#" method="POST">
+            <form class="booking-form" id="bookingForm">
+                <div id="errorMessages" style="color: #ff4d4d; margin-bottom: 15px; font-size: 0.9rem; font-weight: 500;"></div>
+                
+                <input type="hidden" id="editId" value="">
+
                 <div class="form-group">
                     <label for="nama">Nama Lengkap</label>
                     <input type="text" id="nama" name="nama" required>
@@ -143,16 +148,18 @@
                     <textarea id="catatan" name="catatan"></textarea>
                 </div>
 
-                <button type="submit">Booking Sekarang</button>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" id="btnSubmit" class="cta-btn" style="flex: 1;">Booking Sekarang</button>
+                    <button type="button" id="btnCancelEdit" class="cta-btn" style="background-color: var(--border-color); display: none;">Batal Edit</button>
+                </div>
             </form>
         </section>
 
         <section class="table-section">
             <h2>Data Reservasi</h2>
-            <form class="search-form" action="#" style="display: flex; gap: 10px; margin-bottom: 20px;">
-    <input type="text" placeholder="Cari nama pemesan atau ruangan..." required style="flex: 1;">
-    <button type="submit" class="cta-btn" style="padding: 12px 20px;">Cari Data</button>
-</form>
+            <form class="search-form" id="searchForm" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <input type="text" id="searchInput" placeholder="Cari nama pemesan atau ruangan..." style="flex: 1; padding: 12px; background: var(--bg-deep-navy); color: white; border: 1px solid var(--border-color); border-radius: 6px;">
+            </form>
 
             <table>
                 <thead>
@@ -163,50 +170,10 @@
                         <th>Jam</th>
                         <th>Durasi</th>
                         <th>Status</th>
-                    </tr>
+                        <th>Aksi</th> </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Andi</td>
-                        <td>VIP</td>
-                        <td>28-03-2026</td>
-                        <td>18:00</td>
-                        <td>2 jam</td>
-                        <td>Confirmed</td>
-                    </tr>
-                    <tr>
-                        <td>Sinta</td>
-                        <td>VVIP</td>
-                        <td>28-03-2026</td>
-                        <td>20:00</td>
-                        <td>3 jam</td>
-                        <td>Pending</td>
-                    </tr>
-                    <tr>
-                        <td>Budi</td>
-                        <td>Family</td>
-                        <td>29-03-2026</td>
-                        <td>14:00</td>
-                        <td>2 jam</td>
-                        <td>Confirmed</td>
-                    </tr>
-                    <tr>
-                        <td>Citra</td>
-                        <td>Regular</td>
-                        <td>29-03-2026</td>
-                        <td>16:00</td>
-                        <td>1 jam</td>
-                        <td>Cancelled</td>
-                    </tr>
-                    <tr>
-                        <td>Dimas</td>
-                        <td>VIP</td>
-                        <td>30-03-2026</td>
-                        <td>19:00</td>
-                        <td>2 jam</td>
-                        <td>Pending</td>
-                    </tr>
-                </tbody>
+                <tbody id="tableBody">
+                    </tbody>
             </table>
         </section>
 
@@ -246,5 +213,6 @@
     <p>&copy; 2026 SingSpace Karaoke. All rights reserved.</p>
 </div>
 
+<script src="script.js"></script>
 </body>
 </html>
