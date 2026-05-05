@@ -8,7 +8,6 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-Route::view('/tentang', 'tentang');
-
 Route::get('/hitung/{a}/{b}', fn($a, $b) => $a + $b);
+Route::view('/tentang', 'tentang');
+Route::view('/kontak', 'kontak');

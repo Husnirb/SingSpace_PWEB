@@ -3,15 +3,14 @@
 @section('title', 'Dashboard - SingSpace Karaoke')
 
 @section('content')
+
 <section class="hero">
     <div class="hero-content">
         <h1><span class="text-white">SingSpace</span> Karaoke</h1>
-
         <p class="hero-desc">
             Jadikan setiap momen bernyanyimu lebih spektakuler di SingSpace! Nikmati atmosfer hiburan kelas atas dengan privasi maksimal di ruang VIP dan VVIP eksklusif kami. Amankan tempatmu hanya dalam hitungan detik.
             Pesan sekarang dan mulai bernyanyi!
         </p>
-
         <button class="cta-btn">Booking Sekarang</button>
     </div>
 </section>
@@ -39,36 +38,35 @@
             </select>
         </div>
 
-        <h3 class="sidebar-title mt-4">📊 Statistik Hari Ini</h3>
+<h3 class="sidebar-title mt-4">📊 Statistik Hari Ini</h3>
         <div class="stat-grid">
-            <div class="stat-box">
-                <span class="stat-value" id="statTotal">0</span>
-                <span class="stat-label">Total Reservasi</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-value" id="statConfirmed">0</span>
-                <span class="stat-label">Confirmed</span>
-            </div>
-            <div class="stat-box ready-vip">
-                <span class="stat-value text-orange" id="statPending">0</span>
-                <span class="stat-label">Pending</span>
-            </div>
-            <div class="stat-box ready-vvip">
-                <span class="stat-value text-orange" id="statVipVvip">0</span>
-                <span class="stat-label">VIP/VVIP</span>
-            </div>
+            <x-stat-card judul="Total Reservasi" nilai="6" ikon='<i class="fa-solid fa-clipboard-list"></i>' />
+            <x-stat-card judul="Confirmed" nilai="2" ikon='<i class="fa-solid fa-square-check"></i>' warna="#10B981" />
+            <x-stat-card judul="Pending" nilai="4" ikon='<i class="fa-solid fa-hourglass-half"></i>' warna="var(--primary-orange)" />
+            <x-stat-card judul="VIP VVIP" nilai="2" ikon='<i class="fa-solid fa-crown"></i>' warna="var(--primary-orange)" />
         </div>
     </aside>
 
     <main class="content">
 
-        <section class="room-section">
+<section class="room-section">
             <h2>Daftar Ruangan</h2>
             <div class="room-grid">
-                <div class="room-card">Regular Room</div>
-                <div class="room-card">Family Room</div>
-                <div class="room-card">VIP Room</div>
-                <div class="room-card">VVIP Room</div>
+                @forelse ($daftarRuangan as $ruang)
+                    <div class="room-card" style="display: flex; flex-direction: column; gap: 8px;">
+                        <h4 style="margin: 0; font-size: 1.1rem;">{{ $ruang['nama'] }}</h4>
+
+                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                            <i class="fa-solid fa-users" style="width: 20px;"></i> {{ $ruang['kapasitas'] }} <br>
+                            <i class="fa-solid fa-tag" style="width: 20px;"></i> <span style="color: var(--primary-orange); font-weight: 600;">{{ $ruang['harga'] }}</span>
+                        </div>
+                    </div>
+                @empty
+                    <div style="grid-column: span 4; text-align: center; padding: 20px; border: 1px dashed var(--border-color); border-radius: 8px; color: var(--text-muted);">
+                        <i class="fa-solid fa-face-frown-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>Wah, saat ini belum ada data ruangan yang tersedia.</p>
+                    </div>
+                @endforelse
             </div>
         </section>
 
@@ -76,6 +74,7 @@
             <h2>Form Reservasi</h2>
             <form class="booking-form" id="bookingForm">
                 <div id="errorMessages" style="color: #ff4d4d; margin-bottom: 15px; font-size: 0.9rem; font-weight: 500;"></div>
+
                 <input type="hidden" id="editId" value="">
 
                 <div class="form-group">
@@ -157,3 +156,61 @@
     </main>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const targetStats = {
+            'statTotalReservasi': 13,
+            'statConfirmed': 8,
+            'statPending': 5,
+            'statVIPVVIP': 2
+        };
+
+        for (let id in targetStats) {
+            let element = document.getElementById(id);
+            if (element) {
+                let current = 0;
+                let target = targetStats[id];
+                let increment = target / 50;
+
+                let timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        element.innerText = target;
+                        clearInterval(timer);
+                    } else {
+                        element.innerText = Math.ceil(current);
+                    }
+                }, 20);
+            }
+        }
+
+        const filterRuangan = document.getElementById('filterRuangan');
+        const roomCards = document.querySelectorAll('.room-card');
+
+        if (filterRuangan) {
+            filterRuangan.addEventListener('change', function() {
+                const filterValue = this.value.toLowerCase();
+
+                roomCards.forEach(card => {
+                    const roomName = card.querySelector('h4').innerText.toLowerCase();
+
+                    if (filterValue === 'all' || roomName.includes(filterValue)) {
+                        card.style.display = 'flex';
+                        card.style.opacity = '0';
+
+                        setTimeout(() => {
+                            card.style.transition = 'opacity 0.4s ease-in';
+                            card.style.opacity = '1';
+                        }, 50);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
+</script>
+@endpush
