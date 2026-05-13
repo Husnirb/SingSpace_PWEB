@@ -17,7 +17,8 @@ class Ruangan extends Model
         'harga',
         'kapasitas',
         'is_aktif',
-        'foto'
+        'foto',
+        'user_id',
     ];
 
     protected $casts = [

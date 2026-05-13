@@ -13,7 +13,10 @@ class RuanganController extends Controller
      */
     public function index()
     {
-        $ruangans = Ruangan::latest()->paginate(10);
+        // FILTER: Hanya ambil data yang user_id-nya sama dengan user yang sedang login
+    $ruangans = Ruangan::where('user_id', request()->user()->id)
+                        ->latest()
+                        ->paginate(10);
 
         return view('ruangan.index', compact('ruangans'));
     }
@@ -35,17 +38,20 @@ class RuanganController extends Controller
             'kode_ruangan' => 'required|unique:ruangans,kode_ruangan',
             'nama'         => 'required|min:3',
             'tipe'         => 'required|in:Regular,Family,VIP,VVIP',
-            'foto'         => 'nullable|image|mimes:jpg,png|max:2048', // Validasi Bonus
+            'foto'         => 'nullable|image|mimes:jpg,png|max:2048',
         ]);
 
         $data = $request->all();
+
+        // SUNTIKKAN ID USER YANG SEDANG LOGIN KE DALAM DATA
+        $data['user_id'] = $request->user()->id;
 
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('ruangan_photos', 'public');
         }
 
         Ruangan::create($data);
-        return redirect()->route('ruangan.index')->with('success', 'Ruangan baru berhasil disimpan!');
+        return redirect()->route('ruangan.index')->with('success', 'Ruangan berhasil ditambahkan!');
     }
 
     /**
