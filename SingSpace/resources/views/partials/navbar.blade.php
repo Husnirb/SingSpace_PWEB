@@ -6,7 +6,7 @@
         </div>
         <ul class="nav-menu">
             <li><a href="{{ route('dashboard') }}">Home</a></li>
-            <li><a href="#">Daftar Ruangan</a></li>
+            <li><a href="{{ route('ruangan.catalog') }}">Daftar Ruangan</a></li>
             <li><a href="#">Reservasi</a></li>
             <li><a href="{{ url('/tentang') }}">Tentang</a></li>
             <li><a href="{{ url('/kontak') }}">Kontak</a></li>

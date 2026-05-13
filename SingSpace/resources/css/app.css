@@ -473,3 +473,122 @@ tbody tr:hover {
     font-size: 0.85rem;
     border-top: 1px solid var(--border-color);
 }
+
+.sp-container { max-width: 1100px; margin: 40px auto; padding: 0 20px; font-family: sans-serif; }
+.sp-container-sm { max-width: 800px; }
+.sp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.sp-title { color: #fff; font-size: 26px; font-weight: bold; margin: 0; }
+.sp-title span { color: #f97316; }
+
+/* Komponen Card & Tabel */
+.sp-card { background-color: #1e293b; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid #334155; overflow-x: auto; }
+.sp-table { width: 100%; border-collapse: collapse; text-align: left; color: #cbd5e1; }
+.sp-table th { background-color: #0f172a; padding: 15px 20px; font-weight: 600; color: #94a3b8; border-bottom: 2px solid #334155; }
+.sp-table td { padding: 15px 20px; border-bottom: 1px solid #334155; }
+.sp-table tr:hover { background-color: #273548; }
+
+/* Komponen Form */
+.sp-form-group { margin-bottom: 20px; }
+.sp-label { display: block; color: #cbd5e1; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+.sp-input, .sp-select, .sp-textarea { width: 100%; padding: 12px 15px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 8px; box-sizing: border-box; font-size: 15px; outline: none; transition: border-color 0.3s; }
+.sp-input:focus, .sp-select:focus, .sp-textarea:focus { border-color: #f97316; }
+.sp-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+/* Tombol & Badge */
+.sp-btn { display: inline-block; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; font-size: 14px; text-align: center; transition: 0.3s; }
+.sp-btn:hover { opacity: 0.8; }
+.sp-btn-primary { background-color: #f97316; color: #fff; }
+.sp-btn-secondary { background-color: #475569; color: #fff; border: 1px solid #64748b; }
+.sp-btn-info { background-color: #3b82f6; color: #fff; }
+
+.sp-badge { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+.sp-badge-success { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.sp-badge-danger { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+.sp-badge-neutral { background-color: #334155; color: #fff; }
+
+/* Detail View */
+.sp-row { display: flex; border-bottom: 1px solid #334155; padding: 15px 0; align-items: center; }
+.sp-row:last-child { border-bottom: none; }
+.sp-row-label { width: 30%; color: #94a3b8; font-weight: 600; }
+.sp-row-value { width: 70%; color: #f8fafc; font-size: 16px; }
+
+/* =======================================
+   STYLING KATALOG RUANGAN (PUBLIC)
+   ======================================= */
+.sp-room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.sp-room-card {
+    background: #1e293b;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #334155;
+    transition: all 0.4s ease;
+}
+
+.sp-room-card:hover {
+    transform: translateY(-10px);
+    border-color: #f97316;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.sp-card-img-wrapper {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.sp-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.sp-room-card:hover .sp-card-img {
+    transform: scale(1.1);
+}
+
+.sp-no-img {
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sp-type-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(249, 115, 22, 0.9);
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 800;
+    backdrop-filter: blur(5px);
+}
+
+.sp-btn-book {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #f97316;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 20px;
+    font-weight: 800;
+    transition: 0.3s;
+}
+
+.sp-btn-book:hover {
+    background: #fb923c;
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+}

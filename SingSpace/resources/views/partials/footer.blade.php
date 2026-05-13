@@ -9,7 +9,7 @@
             <h4>Navigasi</h4>
             <ul class="footer-links">
                 <li><a href="{{ route('dashboard') }}">Beranda</a></li>
-                <li><a href="#">Daftar Ruangan</a></li>
+                <li><a href="{{ route('ruangan.catalog') }}">Daftar Ruangan</a></li>
                 <li><a href="#">Cek Reservasi</a></li>
             </ul>
         </div>
