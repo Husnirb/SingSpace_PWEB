@@ -1,71 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="sp-container">
-    <div class="sp-header">
-        <h2 class="sp-title">Manajemen Ruangan <span>SingSpace</span></h2>
-        <a href="{{ route('ruangan.create') }}" class="sp-btn sp-btn-primary">+ Tambah Ruangan</a>
+<div style="padding: 50px 5%; background-color: #0f172a; min-height: 100vh;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #1e293b; padding-bottom: 20px;">
+        <h2 style="color: #fff; font-size: 2rem; margin: 0;">Manajemen <span style="color: #f97316;">Ruangan</span></h2>
+        <a href="{{ route('ruangan.create') }}" style="background: #f97316; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;"><i class="fa-solid fa-plus"></i> Tambah Ruangan</a>
     </div>
 
-    <div class="sp-card" style="padding: 0;">
-        <table class="sp-table">
-            <thead>
+    @if(session('success'))
+        <div style="background: #10b981; color: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div style="background: #1e293b; border-radius: 12px; border: 1px solid #334155; overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; color: #cbd5e1; text-align: left;">
+            <thead style="background: #0f172a; border-bottom: 2px solid #334155;">
                 <tr>
-                    <th>Kode</th>
-                    <th>Nama Ruangan</th>
-                    <th>Preview</th> <th>Tipe</th>
-                    <th>Harga / Jam</th>
-                    <th style="text-align: center;">Status</th>
-                    <th style="text-align: center;">Aksi</th>
+                    <th style="padding: 15px 20px;">Kode</th>
+                    <th style="padding: 15px 20px;">Nama Ruangan</th>
+                    <th style="padding: 15px 20px;">Tipe</th>
+                    <th style="padding: 15px 20px;">Kapasitas</th>
+                    <th style="padding: 15px 20px;">Harga / Jam</th>
+                    <th style="padding: 15px 20px; text-align: center;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($ruangans as $ruangan)
-                <tr>
-                    <td style="color: #fff; font-weight: bold;">{{ $ruangan->kode_ruangan }}</td>
-                    <td>{{ $ruangan->nama }}</td>
-
-                    <td>
-                        @if($ruangan->foto)
-                            <img src="{{ asset('storage/' . $ruangan->foto) }}" style="width: 70px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #334155;">
-                        @else
-                            <div style="width: 70px; height: 45px; background: #0f172a; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #475569; border: 1px dashed #334155;">
-                                <i class="fa-solid fa-image-slash" style="margin-right: 5px;"></i> No Image
-                            </div>
-                        @endif
+                <tr style="border-bottom: 1px solid #334155;">
+                    <td style="padding: 15px 20px; font-weight: bold; color: #f97316;">{{ $ruangan->kode_ruangan }}</td>
+                    <td style="padding: 15px 20px; color: #fff;">{{ $ruangan->nama }}</td>
+                    <td style="padding: 15px 20px;">
+                        <span style="background: #334155; padding: 5px 10px; border-radius: 5px; font-size: 0.85rem;">{{ $ruangan->tipe }}</span>
                     </td>
-
-                    <td><span class="sp-badge sp-badge-neutral">{{ $ruangan->tipe }}</span></td>
-                    <td style="color: #f97316; font-weight: bold;">Rp {{ number_format($ruangan->harga, 0, ',', '.') }}</td>
-                    <td style="text-align: center;">
-                        @if($ruangan->is_aktif)
-                            <span class="sp-badge sp-badge-success">Tersedia</span>
-                        @else
-                            <span class="sp-badge sp-badge-danger">Maintenance</span>
-                        @endif
-                    </td>
-                    <td style="text-align: center;">
-                        <a href="{{ route('ruangan.show', $ruangan->id) }}" class="sp-btn sp-btn-info" style="padding: 6px 12px; margin-right: 5px;">Detail</a>
-                        <a href="{{ route('ruangan.edit', $ruangan->id) }}" class="sp-btn sp-btn-secondary" style="padding: 6px 12px;">Edit</a>
-
-                        <form action="{{ route('ruangan.destroy', $ruangan->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus ruangan {{ $ruangan->nama }}?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="sp-btn" style="background-color: #ef4444; color: #fff; padding: 6px 12px;">Hapus</button>
+                    <td style="padding: 15px 20px;">{{ $ruangan->kapasitas }} Orang</td>
+                    <td style="padding: 15px 20px;">Rp {{ number_format($ruangan->harga, 0, ',', '.') }}</td>
+                    <td style="padding: 15px 20px; text-align: center;">
+                        <a href="{{ route('ruangan.edit', $ruangan->id) }}" style="color: #38bdf8; text-decoration: none; margin-right: 15px;"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                        <form action="{{ route('ruangan.destroy', $ruangan->id) }}" method="POST" style="display: inline;">
+                            @csrf @method('DELETE')
+                            <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem;" onclick="return confirm('Yakin ingin menghapus data ini?')"><i class="fa-solid fa-trash"></i> Hapus</button>
                         </form>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" style="text-align: center; padding: 40px; color: #64748b;">Belum ada data ruangan.</td>
+                    <td colspan="6" style="padding: 30px; text-align: center; color: #64748b;">Belum ada data ruangan yang Anda tambahkan.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
-    </div>
-
-    <div style="margin-top: 20px;">
-        {{ $ruangans->links() }}
     </div>
 </div>
 @endsection

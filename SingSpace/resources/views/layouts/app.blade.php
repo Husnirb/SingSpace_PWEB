@@ -7,6 +7,138 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 0. FIX CELAH MISTERIUS: Warnai dasar body dengan Navy agar celah tidak terlihat */
+        body { background-color: #0f172a; margin: 0; padding: 0; }
+        header { border-bottom: none !important; }
+
+        /* 1. Background Dasar Light Mode */
+        html:not(.dark) body,
+        html:not(.dark) .landing-wrapper,
+        html:not(.dark) .pilih-container {
+            background-color: #f8fafc !important;
+        }
+
+        /* 2. Warna Section */
+        html:not(.dark) .features-section,
+        html:not(.dark) .contact-section,
+        html:not(.dark) .dual-section {
+            background-color: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+        }
+        html:not(.dark) .about-pane, html:not(.dark) .location-pane {
+            background-color: transparent !important;
+        }
+
+        /* 3. Warna Kartu/Box */
+        html:not(.dark) .feature-box,
+        html:not(.dark) .loc-card,
+        html:not(.dark) .contact-card,
+        html:not(.dark) .pilih-room-card {
+            background: #ffffff !important;
+            border-color: #e2e8f0 !important;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05) !important;
+        }
+
+        /* 4. PERBAIKAN TEKS JUDUL & ANGKA */
+        html:not(.dark) .feature-box h3,
+        html:not(.dark) .about-title,
+        html:not(.dark) .stat-number,
+        html:not(.dark) .loc-title,
+        html:not(.dark) .contact-header,
+        html:not(.dark) .contact-title,
+        html:not(.dark) .pilih-header h1,
+        html:not(.dark) .pilih-room-title,
+        html:not(.dark) .pilih-cap-val {
+            color: #0f172a !important;
+        }
+
+        /* FIX 1: TULISAN 'KARAOKE' & 'DIMULAI DARI SINI' TETAP OREN! */
+        html:not(.dark) .hero-title span,
+        html:not(.dark) .about-title span {
+            color: #f97316 !important;
+        }
+
+        /* FIX 2: NOMOR WHATSAPP MUNCUL DI LIGHT MODE (Biar nggak nyaru putih ke putih) */
+        html:not(.dark) .loc-detail span,
+        html:not(.dark) .loc-card span[style] {
+            color: #475569 !important;
+            font-weight: 800 !important;
+        }
+
+        /* 5. PERBAIKAN TEKS PARAGRAF */
+        html:not(.dark) .feature-box p,
+        html:not(.dark) .about-text,
+        html:not(.dark) .stat-label,
+        html:not(.dark) .loc-detail,
+        html:not(.dark) .contact-subtitle,
+        html:not(.dark) .contact-text,
+        html:not(.dark) .pilih-header p,
+        html:not(.dark) .pilih-room-desc {
+            color: #475569 !important;
+        }
+
+        /* 6. PENGECUALIAN HERO & FOOTER (Tetap Dark/Premium sesuai aslinya) */
+        html:not(.dark) .hero-section {
+            border-bottom-color: #e2e8f0 !important;
+        }
+        html:not(.dark) .hero-title {
+            color: #ffffff !important; /* Teks utama Hero tetap putih */
+        }
+        html:not(.dark) .hero-desc {
+            color: #cbd5e1 !important;
+        }
+
+        html:not(.dark) .cta-footer {
+            background-color: #1e293b !important;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png') !important;
+            border-top-color: #e2e8f0 !important;
+        }
+        html:not(.dark) .cta-footer h2 {
+            color: #ffffff !important;
+        }
+        html:not(.dark) .cta-footer p {
+            color: #94a3b8 !important;
+        }
+    </style>
+
+    <script>
+        // Helper Functions
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                let date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            let nameEQ = name + "=";
+            let ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function deleteCookie(name) {
+            document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+
+        // Cek Cookie saat Load (Cegah FOUC)
+        let theme = getCookie('theme');
+        // Default SingSpace adalah Dark, jadi kalau belum ada cookie, paksa jadi dark
+        if (theme === 'dark' || !theme) {
+            document.documentElement.classList.add('dark');
+            if(!theme) setCookie('theme', 'dark', 30);
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 <body>
 

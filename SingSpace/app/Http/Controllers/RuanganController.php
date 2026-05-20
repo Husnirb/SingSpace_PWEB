@@ -13,11 +13,8 @@ class RuanganController extends Controller
      */
     public function index()
     {
-        // FILTER: Hanya ambil data yang user_id-nya sama dengan user yang sedang login
-    $ruangans = Ruangan::where('user_id', request()->user()->id)
-                        ->latest()
-                        ->paginate(10);
-
+        // ADMIN: Hanya melihat ruangan yang dia buat sendiri (Sesuai tugas Bonus no 9)
+        $ruangans = Ruangan::where('user_id', request()->user()->id)->latest()->paginate(10);
         return view('ruangan.index', compact('ruangans'));
     }
 
@@ -108,7 +105,22 @@ class RuanganController extends Controller
 
     public function catalog()
     {
-        $ruangans = Ruangan::where('is_aktif', 1)->get();
+        // PUBLIK: Melihat semua ruangan yang ada di database
+        $ruangans = Ruangan::latest()->get();
         return view('ruangan.catalog', compact('ruangans'));
+    }
+
+    // Fungsi untuk menghandle Live Search via AJAX
+    public function searchAjax(Request $request)
+    {
+        $keyword = $request->keyword;
+
+        // Cari data ruangan berdasarkan nama atau tipe
+        $ruangans = \App\Models\Ruangan::where('nama', 'like', '%' . $keyword . '%')
+                                       ->orWhere('tipe', 'like', '%' . $keyword . '%')
+                                       ->get();
+
+        // Kembalikan data dalam format JSON agar bisa dibaca oleh JavaScript
+        return response()->json($ruangans);
     }
 }
