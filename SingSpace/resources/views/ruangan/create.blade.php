@@ -46,10 +46,13 @@
 
             <div class="sp-form-group">
                 <label class="sp-label">Status Ruangan</label>
-                <select name="is_aktif" class="sp-select" required>
-                    <option value="1" {{ old('is_aktif') == '1' ? 'selected' : '' }}>Tersedia (Aktif)</option>
-                    <option value="0" {{ old('is_aktif') == '0' ? 'selected' : '' }}>Maintenance (Tidak Aktif)</option>
+                <select name="status" class="sp-select" required>
+                    <option value="Tersedia" {{ old('status') == 'Tersedia' ? 'selected' : '' }}>Tersedia (Aktif)</option>
+                    <option value="Maintenance" {{ old('status') == 'Maintenance' ? 'selected' : '' }}>Maintenance (Tidak Aktif)</option>
                 </select>
+                @error('status')
+                    <span style="color: #ef4444; font-size: 0.85rem; margin-top: 5px; display: block;">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="sp-form-group">

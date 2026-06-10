@@ -50,6 +50,9 @@
                     <option value="1" {{ old('is_aktif', $ruangan->is_aktif) == 1 ? 'selected' : '' }}>Tersedia (Aktif)</option>
                     <option value="0" {{ old('is_aktif', $ruangan->is_aktif) == 0 ? 'selected' : '' }}>Maintenance (Tidak Aktif)</option>
                 </select>
+                @error('is_aktif')
+                    <span style="color: #ef4444; font-size: 0.85rem; margin-top: 5px; display: block;">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="sp-form-group">

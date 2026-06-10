@@ -35,6 +35,7 @@ class RuanganController extends Controller
             'kode_ruangan' => 'required|unique:ruangans,kode_ruangan',
             'nama'         => 'required|min:3',
             'tipe'         => 'required|in:Regular,Family,VIP,VVIP',
+            'status'       => 'nullable|string', // Beri izin form create untuk menerima status
             'foto'         => 'nullable|image|mimes:jpg,png|max:2048',
         ]);
 
@@ -74,9 +75,11 @@ class RuanganController extends Controller
      */
     public function update(Request $request, Ruangan $ruangan)
     {
+        // FIX: Tambahkan validasi untuk status
         $request->validate([
             'kode_ruangan' => 'required|unique:ruangans,kode_ruangan,' . $ruangan->id,
             'nama'         => 'required|min:3',
+            'is_aktif'     => 'required|boolean', // <-- Ini yang benar
             'foto'         => 'nullable|image|mimes:jpg,png|max:2048',
         ]);
 
@@ -90,6 +93,7 @@ class RuanganController extends Controller
             $data['foto'] = $request->file('foto')->store('ruangan_photos', 'public');
         }
 
+        // Karena 'status' sudah ada di $fillable, sekarang method update() ini akan berhasil menyimpan status barunya!
         $ruangan->update($data);
         return redirect()->route('ruangan.index')->with('success', 'Data ruangan diperbarui!');
     }

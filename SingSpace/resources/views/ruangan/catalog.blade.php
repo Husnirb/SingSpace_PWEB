@@ -43,6 +43,9 @@
     .pilih-btn-book:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(249, 115, 22, 0.5); color: #fff; }
     .pilih-btn-book::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s; z-index: -1;}
     .pilih-btn-book:hover::before { left: 100%; }
+
+    /* 4. TOMBOL MAINTENANCE (DISABLE) */
+    .pilih-btn-disabled { display: block; width: 100%; text-align: center; background: #334155; color: #94a3b8; padding: 18px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; border: 1px solid #475569; cursor: not-allowed; text-transform: uppercase; letter-spacing: 1px; }
 </style>
 
 <div class="pilih-container">
@@ -60,6 +63,7 @@
             <input type="text" id="live-search-input" placeholder="Cari ruangan... (Ketik 'Family' atau 'VIP')" style="width: 100%; padding: 15px 15px 15px 55px; border-radius: 12px; border: 2px solid #334155; background-color: #1e293b; color: #fff; font-size: 1.05rem; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='#334155'">
         </div>
     </div>
+
     <div class="pilih-room-grid" id="original-grid">
         @forelse($ruangans as $ruangan)
         <div class="pilih-room-card">
@@ -88,7 +92,11 @@
                     </div>
                 </div>
 
-                <a href="{{ route('booking.create', $ruangan->id) }}" class="pilih-btn-book">Booking Sekarang</a>
+                @if($ruangan->is_aktif == 0)
+                    <div class="pilih-btn-disabled"><i class="fa-solid fa-tools" style="margin-right: 8px;"></i> Sedang Perbaikan</div>
+                @else
+                    <a href="{{ route('booking.create', $ruangan->id) }}" class="pilih-btn-book">Booking Sekarang</a>
+                @endif
             </div>
 
         </div>
@@ -107,13 +115,11 @@
     const searchGrid = document.getElementById('search-grid');
     const csrfToken = document.getElementById('csrf_token').value;
 
-    // Trik mendapatkan format Route Laravel di dalam JS
     const bookingRoute = "{{ route('booking.create', ':id') }}";
 
     searchInput.addEventListener('keyup', async function() {
         let keyword = this.value;
 
-        // JIKA INPUT KOSONG: Tampilkan list asli, sembunyikan hasil pencarian
         if(keyword.length === 0) {
             originalGrid.style.display = 'grid';
             searchGrid.style.display = 'none';
@@ -122,7 +128,6 @@
         }
 
         try {
-            // REQUEST AJAX POST (Sesuai Soal)
             const response = await fetch("{{ route('ruangan.search') }}", {
                 method: 'POST',
                 headers: {
@@ -134,25 +139,28 @@
 
             const data = await response.json();
 
-            // Sembunyikan Grid Asli, Tampilkan Grid Pencarian
             originalGrid.style.display = 'none';
             searchGrid.style.display = 'grid';
             searchGrid.innerHTML = '';
 
-            // RENDER DATA (DOM Manipulation Tanpa Reload)
             if(data.length > 0) {
                 data.forEach(ruangan => {
                     let hargaFormat = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(ruangan.harga);
 
-                    // Render gambar jika ada, placeholder jika kosong
                     let imgHtml = ruangan.foto
                         ? `<img src="/storage/${ruangan.foto}" alt="${ruangan.nama}">`
                         : `<i class="fa-solid fa-image" style="font-size: 5rem; color: #334155;"></i>`;
 
-                    // Buat link URL ke halaman booking
                     let url = bookingRoute.replace(':id', ruangan.id);
 
-                    // Template kartu yang 100% SAMA dengan desain aslinya
+                    // Cek angka is_aktif dari JSON response langsung (lebih bersih)
+                    let btnHtml = '';
+                    if(ruangan.is_aktif == 0 || ruangan.is_aktif === false) {
+                        btnHtml = `<div class="pilih-btn-disabled"><i class="fa-solid fa-tools" style="margin-right: 8px;"></i> Sedang Perbaikan</div>`;
+                    } else {
+                        btnHtml = `<a href="${url}" class="pilih-btn-book">Booking Sekarang</a>`;
+                    }
+
                     searchGrid.innerHTML += `
                         <div class="pilih-room-card">
                             <div class="pilih-room-img-wrap">
@@ -172,7 +180,7 @@
                                         <span class="pilih-cap-val"><i class="fa-solid fa-user-group" style="margin-right: 7px; color: #cbd5e1;"></i> ${ruangan.kapasitas}</span><span class="pilih-price-unit"> Orang</span>
                                     </div>
                                 </div>
-                                <a href="${url}" class="pilih-btn-book">Booking Sekarang</a>
+                                ${btnHtml}
                             </div>
                         </div>
                     `;

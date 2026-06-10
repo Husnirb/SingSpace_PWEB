@@ -38,39 +38,17 @@
             </form>
         </div>
 
-        <div style="background: rgba(30, 41, 59, 0.6); border: 1px dashed #f97316; border-radius: 24px; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.3);">
-            <h3 style="color: #fff; margin: 0 0 20px 0; font-size: 1.2rem; display: flex; align-items: center; gap: 10px;">
-                <i class="fa-solid fa-chart-line" style="color: #f97316;"></i> Analitik Kunjungan Halaman
-            </h3>
-
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
-                <div style="display: flex; justify-content: space-between; background: #0f172a; padding: 12px 20px; border-radius: 10px;">
-                    <span style="color: #94a3b8; font-size: 0.9rem;">Jumlah Kunjungan Anda:</span>
-                    <strong style="color: #f97316; font-size: 1.05rem;"><i class="fa-solid fa-eye"></i> {{ $totalKunjungan }} Kali</strong>
-                </div>
-                <div style="display: flex; justify-content: space-between; background: #0f172a; padding: 12px 20px; border-radius: 10px; flex-wrap: wrap; gap: 5px;">
-                    <span style="color: #94a3b8; font-size: 0.9rem;">Waktu Kunjungan Pertama:</span>
-                    <span style="color: #fff; font-size: 0.9rem; font-family: monospace;">{{ $waktuPertama }}</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; background: #0f172a; padding: 12px 20px; border-radius: 10px; flex-wrap: wrap; gap: 5px;">
-                    <span style="color: #94a3b8; font-size: 0.9rem;">Waktu Kunjungan Terakhir:</span>
-                    <span style="color: #38bdf8; font-size: 0.9rem; font-family: monospace;">{{ $waktuTerakhir }}</span>
-                </div>
-            </div>
-
-            <form action="{{ route('preferensi.reset') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengulang hitungan kunjungan dari awal?')">
-                @csrf
-                <button type="submit" style="width: 100%; padding: 12px; border-radius: 10px; background: transparent; border: 1px solid #ef4444; color: #ef4444; font-weight: bold; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';" onmouseout="this.style.background='transparent'; this.style.color='#ef4444';">
-                    <i class="fa-solid fa-rotate-left"></i> Reset Hitungan Kunjungan
-                </button>
-            </form>
-        </div>
-
     </div>
 </div>
 
 <script>
-    // Script Simpan Preferensi Fetch POST (Tetap Sama)
+    // 1. Atur nilai dropdown sesuai cookie saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('tema').value = getCookie('theme') || 'dark';
+        document.getElementById('ukuran_font').value = getCookie('font_size') || 'medium';
+    });
+
+    // 2. Proses saat tombol simpan diklik
     document.getElementById('formPreferensi').addEventListener('submit', async function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSimpan');
@@ -92,14 +70,15 @@
             const data = await response.json();
 
             if(data.status === 'success') {
-                if(data.new_theme === 'dark') document.documentElement.classList.add('dark');
-                else document.documentElement.classList.remove('dark');
+                // Tulis cookie secara manual via JS agar tidak dienkripsi oleh backend Laravel
+                setCookie('theme', tema, 30);
+                setCookie('font_size', font, 30);
 
-                const sizeMap = { 'small': '14px', 'medium': '16px', 'large': '20px' };
-                document.documentElement.style.fontSize = sizeMap[data.new_size];
+                // Titip pesan Toast untuk dimunculkan setelah reload
+                sessionStorage.setItem('flash_message', data.message);
 
-                alert(data.message);
-                window.location.href = "{{ url('/') }}";
+                // RELOAD HALAMAN INI SAJA biar perubahannya langsung terlihat instan
+                window.location.reload();
             }
         } catch (error) {
             alert('Gagal menyimpan preferensi');

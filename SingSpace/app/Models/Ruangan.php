@@ -9,6 +9,7 @@ class Ruangan extends Model
 {
     use HasFactory;
 
+    // FIX: Tambahkan 'status', 'harga', dan 'kapasitas' agar bisa di-update
     protected $fillable = [
         'kode_ruangan',
         'nama',
@@ -16,6 +17,7 @@ class Ruangan extends Model
         'tipe',
         'harga',
         'kapasitas',
+        'status', // <--- INI BIANG KEROKNYA, SEKARANG SUDAH DIIZINKAN
         'is_aktif',
         'foto',
         'user_id',
@@ -33,6 +35,6 @@ class Ruangan extends Model
 
     public function fasilitas()
     {
-    return $this->belongsToMany(Fasilitas::class, 'ruangan_fasilitas');
+        return $this->belongsToMany(Fasilitas::class, 'ruangan_fasilitas');
     }
 }

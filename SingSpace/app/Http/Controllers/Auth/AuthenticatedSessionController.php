@@ -28,15 +28,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // LOGIKA PENGECEKAN ROLE
+        // LOGIKA PENGECEKAN ROLE & KIRIM FLASH MESSAGE
         if ($request->user()->role === 'admin') {
-            // Jika Admin, masuk ke Dashboard Panel
-            return redirect()->intended(route('dashboard', absolute: false));
+            // Jika Admin, masuk ke Dashboard Panel dengan sapaan khusus
+            return redirect()->intended(route('dashboard', absolute: false))
+                             ->with('success', 'Login berhasil! Selamat bertugas, ' . auth()->user()->name . '!');
         }
 
         // Jika Customer biasa, arahkan kembali ke Katalog Ruangan
-        // (Bisa juga diarahkan ke route('/') jika ingin ke Landing Page)
-        return redirect()->intended(route('ruangan.catalog', absolute: false));
+        return redirect()->intended(route('ruangan.catalog', absolute: false))
+                         ->with('success', 'Login berhasil! Halo, ' . auth()->user()->name . ' 👋');
     }
 
     /**
@@ -50,6 +51,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // Tambahkan pesan saat berhasil Logout
+        return redirect('/')->with('success', 'Kamu telah berhasil keluar dari SingSpace. Sampai jumpa lagi!');
     }
 }

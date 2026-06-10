@@ -24,6 +24,9 @@
     input, select { width: 100%; padding: 14px; border-radius: 10px; background: #0f172a; border: 1px solid #334155; color: #fff; font-size: 1rem; box-sizing: border-box; }
     input:focus, select:focus { outline: none; border-color: #f97316; }
 
+    /* Warna abu-abu untuk opsi jam yang sudah di-booking */
+    select option:disabled { color: #ef4444; font-weight: bold; font-style: italic; }
+
     .btn-orange { background: #f97316; color: #fff; padding: 14px 25px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; font-size: 1.1rem; }
     .btn-orange:hover { background: #ea580c; }
     .btn-outline { background: transparent; color: #cbd5e1; padding: 14px 25px; border-radius: 10px; border: 1px solid #cbd5e1; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; }
@@ -53,9 +56,9 @@
         <div class="step-circle" id="ind-4">4</div>
     </div>
 
-    <form action="{{ route('booking.store') }}" method="POST" enctype="multipart/form-data" id="bookingForm">
+    <form action="{{ route('booking.store') }}" method="POST" enctype="multipart/form-data" id="bookingForm" onsubmit="tampilkanLoading()">
         @csrf
-        <input type="hidden" name="ruangan_id" value="{{ $ruangan->id }}">
+        <input type="hidden" name="ruangan_id" id="ruanganId" value="{{ $ruangan->id }}">
 
         <div class="step-content active" id="step-1">
             <h2>Pilih Tanggal Booking</h2>
@@ -63,7 +66,7 @@
 
             <div class="form-group">
                 <label>Pilih Cabang</label>
-                <input type="text" value="SingSpace - Pusat Jember" readonly style="background: #1e293b; color: #64748b;">
+                <input type="text" value="SingSpace - Pusat Jember" readonly style="background: #1e293b; color: #64748b; cursor: not-allowed;">
             </div>
 
             <div class="form-group">
@@ -151,7 +154,7 @@
 
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" value="{{ auth()->user()->name }}" readonly style="background: #1e293b; color: #64748b;">
+                <input type="text" value="{{ auth()->user()->name }}" readonly style="background: #1e293b; color: #64748b; cursor: not-allowed;">
             </div>
 
             <div class="form-group">
@@ -165,7 +168,7 @@
             </div>
 
             <div id="qrisBox" style="display: none; text-align: center; background: #fff; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QRIS" style="width: 150px; height: 150px;">
+                <img src="{{ asset('img/qris-singspace.png') }}" alt="QRIS SingSpace" style="max-width: 250px; border-radius: 12px; margin-top: 15px;">
                 <p style="color: #0f172a; margin-top: 10px; font-weight: bold;">Scan QRIS SingSpace</p>
             </div>
 
@@ -176,7 +179,7 @@
 
             <div class="action-buttons">
                 <button type="button" class="btn-outline" onclick="nextStep(4, 3)">Kembali</button>
-                <button type="submit" class="btn-orange"><i class="fa-solid fa-check-circle"></i> Konfirmasi Booking</button>
+                <button type="submit" class="btn-orange" id="btnSubmitKonfirmasi"><i class="fa-solid fa-check-circle"></i> Konfirmasi Booking</button>
             </div>
         </div>
 
@@ -184,18 +187,88 @@
 </div>
 
 <script>
-    // JS Untuk Batasan Tanggal (Hari ini s/d 14 Hari ke Depan)
+    // JS Untuk Batasan Tanggal & Waktu Lokal (WIB)
     const dtInput = document.getElementById('inputTanggal');
     const today = new Date();
-    const maxDate = new Date();
-    maxDate.setDate(today.getDate() + 14);
 
-    dtInput.min = today.toISOString().split("T")[0];
-    dtInput.max = maxDate.toISOString().split("T")[0];
+    // Dapatkan format YYYY-MM-DD secara aman sesuai waktu lokal browser user
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const localToday = `${year}-${month}-${day}`;
+
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + 14);
+    const maxYear = maxDate.getFullYear();
+    const maxMonth = String(maxDate.getMonth() + 1).padStart(2, '0');
+    const maxDay = String(maxDate.getDate()).padStart(2, '0');
+    const localMaxDate = `${maxYear}-${maxMonth}-${maxDay}`;
+
+    dtInput.min = localToday;
+    dtInput.max = localMaxDate;
+
+    // ==========================================
+    // JS AJAX: CEK JADWAL PENUH & WAKTU LEWAT
+    // ==========================================
+    const ruanganIdInput = document.getElementById('ruanganId');
+    const jamMulaiSelect = document.getElementById('jamMulai');
+
+    dtInput.addEventListener('change', function() {
+        const tanggal = this.value;
+        const ruanganId = ruanganIdInput.value;
+
+        if(!tanggal) return;
+
+        const now = new Date();
+        const currentHour = now.getHours(); // Mengambil jam saat ini (misal: jam 15 untuk 15:19)
+
+        // 0. Reset semua pilihan jam menjadi terbuka dan normal kembali
+        Array.from(jamMulaiSelect.options).forEach(opt => {
+            opt.disabled = false;
+            if (opt.value) {
+                opt.text = opt.value + ' WIB'; // Kembalikan ke teks asli
+            } else {
+                opt.text = 'Pilih Jam';
+            }
+        });
+
+        // 1. BLOKIR JAM YANG SUDAH LEWAT (KHUSUS JIKA TANGGAL HARI INI)
+        if (tanggal === localToday) {
+            Array.from(jamMulaiSelect.options).forEach(opt => {
+                if (!opt.value) return;
+
+                const optHour = parseInt(opt.value.substring(0, 2));
+                // Jika opsi jam kurang dari atau SAMA DENGAN jam saat ini, kunci!
+                if (optHour <= currentHour) {
+                    opt.disabled = true;
+                    opt.text = opt.value + ' WIB (Lewat)';
+                }
+            });
+        }
+
+        // 2. BLOKIR JAM YANG SUDAH DIBOOKING VIA AJAX
+        fetch(`/cek-jadwal?ruangan_id=${ruanganId}&tanggal=${tanggal}`)
+            .then(response => response.json())
+            .then(bookedHours => {
+                Array.from(jamMulaiSelect.options).forEach(opt => {
+                    if (!opt.value) return; // Abaikan opsi "Pilih Jam"
+
+                    // Cek apakah jam tersebut ada di dalam daftar jam penuh dari server
+                    if (bookedHours.includes(opt.value)) {
+                        opt.disabled = true; // Kunci supaya ga bisa dipilih
+
+                        // Jangan timpa teks kalau sebelumnya sudah dilabeli (Lewat)
+                        if (!opt.text.includes('(Lewat)')) {
+                            opt.text = opt.value + ' WIB (Penuh)';
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Ups, gagal mengecek jadwal:', error));
+    });
 
     // JS Navigasi Antar Step
     function nextStep(current, next) {
-        // Validasi simpel sebelum lanjut
         if (current === 1 && !dtInput.value) {
             alert('Silakan pilih tanggal booking terlebih dahulu!');
             return;
@@ -241,6 +314,14 @@
         } else {
             qrisBox.style.display = 'none';
         }
+    }
+
+    // JS Loading State Button Konfirmasi
+    function tampilkanLoading() {
+        const btn = document.getElementById('btnSubmitKonfirmasi');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sedang Memproses...';
+        btn.style.opacity = '0.7';
+        btn.style.cursor = 'not-allowed';
     }
 </script>
 @endsection

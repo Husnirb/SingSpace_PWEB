@@ -88,7 +88,7 @@
     <section class="hero-section">
 
         <div style="display: flex; justify-content: center; margin-bottom: 35px;">
-            <div style="background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; padding: 10px 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: inline-flex; align-items: center; justify-content: center; min-width: 300px; min-height: 50px;">
+            <div onclick="openTrendingModal()" style="cursor: pointer; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50px; padding: 10px 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: inline-flex; align-items: center; justify-content: center; min-width: 300px; min-height: 50px; transition: transform 0.3s, border-color 0.3s;" onmouseover="this.style.transform='scale(1.03)'; this.style.borderColor='rgba(249, 115, 22, 0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">
 
                 <div id="trending-loading" style="color: #cbd5e1; font-size: 0.95rem; display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-circle-notch fa-spin" style="color: #f97316; font-size: 1.1rem;"></i>
@@ -100,10 +100,131 @@
                         <i class="fa-solid fa-music"></i>
                     </div>
                     <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; font-weight: bold;">#1 Hits:</span>
-                    <strong id="t-title" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;"></strong>
+                    <strong id="t-title" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px; white-space: nowrap; max-width: 150px; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: bottom;"></strong>
                     <span style="color: #64748b; font-style: italic;">oleh</span>
-                    <span id="t-artist" style="color: #38bdf8; font-weight: bold;"></span>
+                    <span id="t-artist" style="color: #38bdf8; font-weight: bold; white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: bottom;"></span>
                 </div>
+            </div>
+        </div>
+
+        <h1 class="hero-title">SingSpace <span>Karaoke</span></h1>
+        <p class="hero-desc">
+            Jadikan setiap momen bernyanyimu lebih spektakuler di SingSpace! Nikmati atmosfer hiburan kelas atas dengan privasi maksimal di ruang VIP dan VVIP eksklusif kami. Amankan tempatmu hanya dalam hitungan detik. Pesan sekarang dan mulai bernyanyi!
+        </p>
+
+        <style>
+            .btn-hero-premium {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                background: linear-gradient(135deg, #f97316, #ea580c);
+                color: #ffffff !important;
+                padding: 16px 45px;
+                border-radius: 50px;
+                font-size: 1.05rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                text-decoration: none;
+                box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin-top: 15px;
+            }
+
+            .btn-hero-premium:hover {
+                transform: translateY(-5px) scale(1.02);
+                box-shadow: 0 20px 40px rgba(249, 115, 22, 0.6);
+                background: linear-gradient(135deg, #fb923c, #f97316);
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+
+            .btn-hero-premium i {
+                transition: transform 0.3s ease;
+                font-size: 1.1rem;
+            }
+
+            .btn-hero-premium:hover i {
+                transform: translateX(6px);
+            }
+        </style>
+
+        <a href="{{ route('ruangan.catalog') }}" class="btn-hero-premium">
+            Booking Sekarang <i class="fa-solid fa-arrow-right-long"></i>
+        </a>
+
+        <style>
+            .trending-overlay {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(10, 15, 30, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+                z-index: 9999; display: flex; justify-content: center; align-items: center;
+                opacity: 0; visibility: hidden; transition: all 0.4s ease;
+            }
+            .trending-overlay.show { opacity: 1; visibility: visible; }
+
+            .trending-modal {
+                background: rgba(30, 41, 59, 0.7);
+                border: 1px solid rgba(249, 115, 22, 0.3); /* Aksen garis oren tipis */
+                border-radius: 30px; width: 90%; max-width: 480px;
+                padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(249, 115, 22, 0.15);
+                position: relative;
+                transform: translateY(50px) scale(0.95); transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+            .trending-overlay.show .trending-modal { transform: translateY(0) scale(1); }
+
+            /* Tombol Close Elegan */
+            .close-modal-btn {
+                position: absolute; top: -15px; right: -15px; background: #1e293b;
+                border: 2px solid #334155; color: #94a3b8; width: 45px; height: 45px; border-radius: 50%;
+                display: flex; justify-content: center; align-items: center; cursor: pointer;
+                transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.5); font-size: 1.2rem;
+            }
+            .close-modal-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; transform: rotate(90deg) scale(1.1); }
+
+            /* Desain List Item Premium */
+            .song-item {
+                display: flex; align-items: center; gap: 18px; padding: 15px 20px;
+                background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 16px; margin-bottom: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .song-item:hover {
+                transform: translateX(10px);
+                background: rgba(249, 115, 22, 0.1); border-color: rgba(249, 115, 22, 0.5);
+                box-shadow: 0 10px 25px rgba(249, 115, 22, 0.2);
+            }
+
+            /* Badge Ranking */
+            .song-rank {
+                font-size: 1.2rem; color: #fff; font-weight: 900;
+                background: #334155; width: 45px; height: 45px; border-radius: 12px;
+                display: flex; justify-content: center; align-items: center; flex-shrink: 0;
+                box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+            }
+            .song-info { flex: 1; overflow: hidden; }
+            .song-info h4 { color: #fff; margin: 0 0 5px 0; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .song-info p { color: #94a3b8; margin: 0; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+            /* Kustomisasi Scrollbar Modal */
+            #trending-list-container::-webkit-scrollbar { width: 8px; }
+            #trending-list-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; margin: 10px 0; }
+            #trending-list-container::-webkit-scrollbar-thumb { background: rgba(249, 115, 22, 0.5); border-radius: 10px; }
+            #trending-list-container::-webkit-scrollbar-thumb:hover { background: rgba(249, 115, 22, 0.8); }
+        </style>
+
+        <div id="trendingModal" class="trending-overlay" onclick="closeTrendingModal(event)">
+            <div class="trending-modal" onclick="event.stopPropagation()">
+                <button onclick="closeTrendingModal()" class="close-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <div style="display: inline-flex; justify-content: center; align-items: center; width: 60px; height: 60px; background: rgba(249, 115, 22, 0.15); border-radius: 50%; margin-bottom: 15px; box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);">
+                        <i class="fa-solid fa-headphones-simple" style="color: #f97316; font-size: 1.8rem;"></i>
+                    </div>
+                    <h3 style="color: #fff; margin: 0; font-size: 1.6rem; font-weight: 900; letter-spacing: 1px;">Top 10 <span style="color: #f97316;">Hits</span></h3>
+                    <p style="color: #94a3b8; margin: 5px 0 0 0; font-size: 0.9rem;">Tangga lagu terpopuler di Indonesia saat ini</p>
+                </div>
+
+                <div id="trending-list-container" style="max-height: 45vh; overflow-y: auto; text-align: left; padding-right: 10px;">
+                    </div>
             </div>
         </div>
 
@@ -111,36 +232,73 @@
             async function fetchTrendingSong() {
                 const loading = document.getElementById('trending-loading');
                 const result = document.getElementById('trending-result');
+                const listContainer = document.getElementById('trending-list-container');
 
                 try {
-                    await new Promise(resolve => setTimeout(resolve, 1200));
+                    await new Promise(resolve => setTimeout(resolve, 1000));
 
-                    // Fetch API iTunes RSS Top Songs Indonesia (Real-time Chart Asli)
-                    const response = await fetch('https://itunes.apple.com/id/rss/topsongs/limit=5/json');
+                    // Fetch 10 Lagu Teratas
+                    const response = await fetch('https://itunes.apple.com/id/rss/topsongs/limit=10/json');
                     const data = await response.json();
+                    const tracks = data.feed.entry;
 
-                    // Ambil lagu urutan pertama (Peringkat 1)
-                    const track = data.feed.entry[0];
+                    // 1. Tampilkan Lagu Peringkat 1 di Widget Utama
+                    document.getElementById('t-title').innerText = tracks[0]['im:name'].label;
+                    document.getElementById('t-artist').innerText = tracks[0]['im:artist'].label;
 
-                    document.getElementById('t-title').innerText = track['im:name'].label;
-                    document.getElementById('t-artist').innerText = track['im:artist'].label;
-
-                    // Tampilkan hasil
+                    // 2. Tampilkan Hasil (Hilangkan Loading)
                     loading.style.display = 'none';
                     result.style.display = 'flex';
+
+                    // 3. Rakit List untuk di dalam Pop-up Modal
+                    let listHTML = '';
+                    tracks.forEach((track, index) => {
+                        // Desain khusus untuk Peringkat 1, 2, dan 3 (Podium)
+                        let rankStyle = '';
+                        let medalIcon = '';
+
+                        if(index === 0) {
+                            rankStyle = 'background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #fff; box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);';
+                            medalIcon = '<i class="fa-solid fa-crown" style="color:#fbbf24; font-size:0.9rem; margin-left:8px; text-shadow: 0 0 5px rgba(251,191,36,0.5);"></i>';
+                        } else if (index === 1) {
+                            rankStyle = 'background: linear-gradient(135deg, #94a3b8, #64748b); color: #fff;';
+                        } else if (index === 2) {
+                            rankStyle = 'background: linear-gradient(135deg, #b45309, #78350f); color: #fff;';
+                        }
+
+                        listHTML += `
+                            <div class="song-item">
+                                <div class="song-rank" style="${rankStyle}">#${index + 1}</div>
+                                <div class="song-info">
+                                    <h4>${track['im:name'].label} ${medalIcon}</h4>
+                                    <p><i class="fa-solid fa-music" style="margin-right:6px; font-size: 0.75rem; color: #f97316;"></i> ${track['im:artist'].label}</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    listContainer.innerHTML = listHTML;
+
                 } catch (error) {
                     loading.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color: #ef4444;"></i> Gagal memuat tangga lagu.';
                 }
             }
 
+            // Fungsi Kontrol Pop-up
+            function openTrendingModal() {
+                if(document.getElementById('trending-list-container').innerHTML.trim() !== '') {
+                    document.getElementById('trendingModal').classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function closeTrendingModal(event) {
+                document.getElementById('trendingModal').classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+
             document.addEventListener('DOMContentLoaded', fetchTrendingSong);
         </script>
-        <h1 class="hero-title">SingSpace <span>Karaoke</span></h1>
-        <p class="hero-desc">
-            Jadikan setiap momen bernyanyimu lebih spektakuler di SingSpace! Nikmati atmosfer hiburan kelas atas dengan privasi maksimal di ruang VIP dan VVIP eksklusif kami. Amankan tempatmu hanya dalam hitungan detik. Pesan sekarang dan mulai bernyanyi!
-        </p>
-        <a href="{{ route('ruangan.catalog') }}" class="btn-hero">Booking Sekarang</a>
-    </section>
+        </section>
 
     <section class="features-section">
         <div class="feature-box">
@@ -222,7 +380,7 @@
                 <h4 class="contact-title">Telepon</h4>
                 <p class="contact-text">
                     +62 812 4684 1249<br>
-                    Buka: 10.00 - 24.00 WIB
+                    Buka: 10.00 - 22.00 WIB
                 </p>
             </div>
 
@@ -246,4 +404,30 @@
     </section>
 
 </div>
+    <section style="padding: 40px 5%; display: flex; justify-content: center; background-color: #0f172a; border-top: 1px solid #1e293b;">
+            <div style="background: rgba(30, 41, 59, 0.4); border: 1px dashed #334155; border-radius: 20px; padding: 25px 40px; max-width: 800px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+
+                <h4 style="color: #94a3b8; margin: 0 0 20px 0; font-size: 1.1rem;">
+                    <i class="fa-solid fa-chart-simple" style="color: #f97316; margin-right: 8px;"></i> Statistik Kunjungan Publik
+                </h4>
+
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px;">
+                    <div style="background: rgba(15,23,42,0.6); padding: 15px 25px; border-radius: 16px; flex: 1; min-width: 200px;">
+                        <span style="display: block; font-size: 1.8rem; font-weight: 900; color: #fff;">{{ $stats['total'] }} <small style="font-size: 0.9rem; color:#64748b; font-weight:normal;">Kali</small></span>
+                        <span style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Total Kunjungan</span>
+                    </div>
+
+                    <div style="background: rgba(15,23,42,0.6); padding: 15px 25px; border-radius: 16px; flex: 1; min-width: 200px;">
+                        <span style="display: block; font-size: 1rem; font-weight: bold; color: #fff; margin-top: 8px; margin-bottom: 5px;">{{ $stats['first'] }}</span>
+                        <span style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Kunjungan Pertama</span>
+                    </div>
+
+                    <div style="background: rgba(15,23,42,0.6); padding: 15px 25px; border-radius: 16px; flex: 1; min-width: 200px;">
+                        <span style="display: block; font-size: 1rem; font-weight: bold; color: #38bdf8; margin-top: 8px; margin-bottom: 5px;">{{ $stats['last'] }}</span>
+                        <span style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Aktivitas Terakhir</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
 @endsection
