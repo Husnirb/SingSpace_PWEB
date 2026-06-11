@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('harga', 10, 2);          // Pengganti IPK
             $table->integer('kapasitas');             // Pengganti Semester
             $table->boolean('is_aktif')->default(true); // Pengganti Status Aktif
+            $table->string('status')->default('Tersedia'); // <-- INI TAMBAHANNYA BIAR GA ERROR
             $table->string('foto')->nullable();       // Foto Ruangan
             $table->timestamps();
         });
