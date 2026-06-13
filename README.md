@@ -10,9 +10,9 @@
 
 Website ini dikembangkan sebagai bentuk pemenuhan Tugas Akhir Mata Kuliah **Pemrograman Berbasis Web (KSI1412)**, Program Studi S1 Sistem Informasi, Fakultas Ilmu Komputer, Universitas Jember.
 
-**Dibuat oleh:** Husni Rasyid Bachrie (NIM: 242410101017)  
-**Demo Video:** [Masukkan Tautan YouTube Di Sini]  
-**Live Website:** [Masukkan Tautan Hosting Di Sini]
+**Dibuat oleh:** Husni Rasyid Bachrie (NIM: 242410101005)  
+**Demo Video:** []  
+**Website:** [[Singspace](https://singspacepweb-production.up.railway.app/)]
 
 ---
 
