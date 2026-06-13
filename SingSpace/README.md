@@ -177,10 +177,10 @@ Sistem telah dilengkapi dengan data *dummy* melalui proses *Seeder* untuk memuda
 
 | Peran (Role) | Alamat Email | Kata Sandi |
 | --- | --- | --- |
-| **Administrator** | `admin@singspace.com` | `password` |
-| **Pelanggan (Customer)** | `customer@singspace.com` | `password` |
+| **Administrator** | `husni@gmail.com` | `admin123` |
+| **Pelanggan (Customer)** | `rasyid@gmail.com` | `makanbakso` |
 
-*(Anda juga dapat melakukan simulasi pendaftaran sebagai pelanggan baru melalui menu Registrasi pada aplikasi).*
+*(Anda juga dapat melakukan simulasi pendaftaran sebagai pelanggan baru melalui menu Registrasi).*
 
 ---
 
