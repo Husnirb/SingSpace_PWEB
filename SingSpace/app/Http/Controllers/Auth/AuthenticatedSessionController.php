@@ -32,12 +32,12 @@ class AuthenticatedSessionController extends Controller
         if ($request->user()->role === 'admin') {
             // Jika Admin, masuk ke Dashboard Panel dengan sapaan khusus
             return redirect()->intended(route('dashboard', absolute: false))
-                             ->with('success', 'Login berhasil! Selamat bertugas, ' . auth()->user()->name . '!');
+                             ->with('success', 'Login berhasil! Selamat bertugas, ' . $request->user()->name . '!');
         }
 
-        // Jika Customer biasa, arahkan kembali ke Katalog Ruangan
-        return redirect()->intended(route('ruangan.catalog', absolute: false))
-                         ->with('success', 'Login berhasil! Halo, ' . auth()->user()->name . ' 👋');
+        // Jika Customer biasa, arahkan kembali ke Beranda
+        return redirect()->intended('/')
+                         ->with('success', 'Login berhasil! Halo, ' . $request->user()->name . ' 👋');
     }
 
     /**

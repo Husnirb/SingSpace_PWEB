@@ -16,6 +16,7 @@ class CekAdmin
         }
 
         // Jika bukan admin, kembalikan ke beranda dengan pesan peringatan
-        return redirect('/dashboard')->with('error', 'Akses ditolak! Halaman ini khusus Administrator SingSpace.');
+        // SEBELUMNYA: return redirect('/dashboard')->with(...);
+        return redirect('/')->with('error', 'Akses ditolak! Halaman ini khusus Admin SingSpace.');
     }
 }

@@ -8,6 +8,9 @@ use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\PreferensiController;
 use App\Http\Controllers\DashboardController;
 
+// ====================================================================
+// 1. RUTE PUBLIK (Bisa diakses tanpa login)
+// ====================================================================
 Route::get('/', function (Request $request) {
     $count = $request->session()->get('visit_count', 0);
 
@@ -33,16 +36,37 @@ Route::get('/', function (Request $request) {
     return view('welcome', compact('stats'));
 });
 
-// ==== INI YANG BENAR: ARAHKAN KE CONTROLLER ====
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
+// Katalog ruangan publik
 Route::get('/daftar-ruangan', [RuanganController::class, 'catalog'])->name('ruangan.catalog');
 
-Route::middleware('auth')->group(function () {
+// Live Search Ruangan via AJAX
+Route::post('/ruangan/search', [RuanganController::class, 'searchAjax'])->name('ruangan.search');
+
+
+// ====================================================================
+// 2. RUTE KHUSUS ADMIN (Tergembok oleh Middleware 'admin')
+// ====================================================================
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+
+    // Dashboard Admin
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Manajemen Data Ruangan (CRUD Ruangan)
     Route::resource('ruangan', RuanganController::class);
 
+    // Manajemen Reservasi (Admin)
+    Route::get('/admin/reservasi', [ReservasiController::class, 'indexAdmin'])->name('admin.reservasi');
+    Route::patch('/admin/reservasi/{id}/status', [ReservasiController::class, 'updateStatus'])->name('admin.reservasi.status');
+
+});
+
+
+// ====================================================================
+// 3. RUTE CUSTOMER & ADMIN (Semua User yang Sudah Login)
+// ====================================================================
+Route::middleware('auth')->group(function () {
+
+    // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -51,20 +75,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/ruangan/{id}/booking', [ReservasiController::class, 'create'])->name('booking.create');
     Route::post('/booking', [ReservasiController::class, 'store'])->name('booking.store');
 
-    // ==== ROUTE AJAX UNTUK CEK JADWAL PENUH ====
+    // ROUTE AJAX UNTUK CEK JADWAL PENUH
     Route::get('/cek-jadwal', [ReservasiController::class, 'cekJadwal'])->name('cek-jadwal');
-
-    // Manajemen Reservasi (Admin)
-    Route::get('/admin/reservasi', [ReservasiController::class, 'indexAdmin'])->name('admin.reservasi');
-    Route::patch('/admin/reservasi/{id}/status', [ReservasiController::class, 'updateStatus'])->name('admin.reservasi.status');
 
     // Route Preferensi & Hitung Kunjungan Session
     Route::get('/preferensi', [PreferensiController::class, 'index'])->name('preferensi.index');
     Route::post('/preferensi/save', [PreferensiController::class, 'save'])->name('preferensi.save');
     Route::post('/preferensi/reset', [PreferensiController::class, 'resetKunjungan'])->name('preferensi.reset');
+
 });
 
 require __DIR__.'/auth.php';
-
-// Live Search Ruangan via AJAX
-Route::post('/ruangan/search', [RuanganController::class, 'searchAjax'])->name('ruangan.search');
