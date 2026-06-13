@@ -8,7 +8,7 @@
 
 **SingSpace** adalah platform reservasi ruang karaoke eksklusif berbasis web. Sistem ini dirancang untuk mendigitalkan proses pemesanan ruangan, mengelola ketersediaan jadwal secara *real-time*, dan memberikan pengalaman pengguna yang interaktif melalui antarmuka adaptif dan modern.
 
-Aplikasi ini dikembangkan sebagai bentuk pemenuhan Tugas Akhir Mata Kuliah **Pemrograman Berbasis Web (KSI1412)**, Program Studi S1 Sistem Informasi, Fakultas Ilmu Komputer, Universitas Jember.
+Website ini dikembangkan sebagai bentuk pemenuhan Tugas Akhir Mata Kuliah **Pemrograman Berbasis Web (KSI1412)**, Program Studi S1 Sistem Informasi, Fakultas Ilmu Komputer, Universitas Jember.
 
 **Dibuat oleh:** Husni Rasyid Bachrie (NIM: 242410101017)  
 **Demo Video:** [Masukkan Tautan YouTube Di Sini]  
@@ -22,7 +22,7 @@ Aplikasi ini dikembangkan sebagai bentuk pemenuhan Tugas Akhir Mata Kuliah **Pem
 - [Keunggulan Sistem (Standar RTM)](#-keunggulan-sistem-standar-rtm)
 - [Struktur Database](#-struktur-database)
 - [Persyaratan Sistem](#-persyaratan-sistem)
-- [Panduan Instalasi & Menjalankan Aplikasi](#-panduan-instalasi--menjalankan-aplikasi)
+- [Panduan Instalasi & Menjalankan Website](#-panduan-instalasi--menjalankan-Website)
 - [Akun Akses Default](#-akun-akses-default-demo)
 
 ---
@@ -48,7 +48,7 @@ Sistem ini memfasilitasi dua peran utama, yaitu Pengguna (Customer) dan Administ
 
 ## 🎯 Keunggulan Sistem (Standar RTM)
 
-Aplikasi SingSpace dikembangkan secara ketat dengan mematuhi standar pengembangan web modern:
+Website SingSpace dikembangkan secara ketat dengan mematuhi standar pengembangan web modern:
 1. **HTML5 Semantik:** Penggunaan struktur tag yang bermakna (`<main>`, `<section>`, `<article>`) untuk menunjang aksesibilitas dan SEO.
 2. **Komunikasi Asinkronus (AJAX):** Implementasi Fetch API dengan algoritma *Debounce* pada pencarian dan jadwal untuk meringankan beban server, lengkap dengan *Loading Indicator* dan *Error Handling*.
 3. **Validasi Klien Tingkat Lanjut:** Integrasi *SweetAlert2* dengan desain *Glassmorphism* kustom untuk memvalidasi *input* formulir dan memberikan *feedback* yang informatif.
@@ -59,7 +59,7 @@ Aplikasi SingSpace dikembangkan secara ketat dengan mematuhi standar pengembanga
 
 ## 🗄️ Struktur Database
 
-Aplikasi menggunakan database relasional (MySQL) dengan tabel utama sebagai berikut:
+Website menggunakan database relasional (MySQL) dengan tabel utama sebagai berikut:
 1. `users`: Menyimpan data autentikasi pengguna dan peran akses (*role*).
 2. `ruangans`: Menyimpan entitas dan spesifikasi ruangan (nama, tipe, harga, foto, status).
 3. `reservasis`: Mencatat jejak transaksional, jadwal pemesanan, tagihan, dan file bukti pembayaran.
@@ -67,7 +67,7 @@ Aplikasi menggunakan database relasional (MySQL) dengan tabel utama sebagai beri
 
 ---
 
-## 🚀 Panduan Instalasi & Menjalankan Aplikasi
+## 🚀 Panduan Instalasi & Menjalankan Website
 
 Ikuti panduan berikut untuk mengkonfigurasi dan menjalankan SingSpace di lingkungan lokal (*localhost*) Anda.
 
@@ -99,7 +99,7 @@ npm install
 
 ### 4. Konfigurasi Environment
 
-Salin file pengaturan bawaan aplikasi:
+Salin file pengaturan bawaan Website:
 
 ```bash
 cp .env.example .env
@@ -124,7 +124,7 @@ DB_PASSWORD=
 
 ### 5. Generate Application Key
 
-Amankan sesi dan data terenkripsi aplikasi dengan perintah:
+Amankan sesi dan data terenkripsi Website dengan perintah:
 
 ```bash
 php artisan key:generate
@@ -147,7 +147,7 @@ php artisan storage:link
 
 ### 7. Jalankan Server Lokal
 
-Untuk menjalankan aplikasi, Anda perlu membuka **dua tab Terminal** secara bersamaan di dalam folder proyek:
+Untuk menjalankan Website, Anda perlu membuka **dua tab Terminal** secara bersamaan di dalam folder proyek:
 
 **Terminal 1 (Untuk kompilasi aset CSS/JS):**
 
@@ -164,7 +164,7 @@ php artisan serve
 
 ```
 
-### 8. Akses Aplikasi
+### 8. Akses Website
 
 Setelah kedua proses di atas berjalan tanpa kendala, buka web browser Anda dan kunjungi:
 👉 **http://127.0.0.1:8000**
