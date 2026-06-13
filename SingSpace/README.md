@@ -1,58 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SingSpace - Premium Karaoke Room Reservation System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-Semantic-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![MySQL](https://img.shields.io/badge/MySQL-Ready-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
-## About Laravel
+**SingSpace** adalah platform reservasi ruang karaoke eksklusif berbasis web. Sistem ini dirancang untuk mendigitalkan proses pemesanan ruangan, mengelola ketersediaan jadwal secara *real-time*, dan memberikan pengalaman pengguna yang interaktif melalui antarmuka adaptif dan modern.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Aplikasi ini dikembangkan sebagai bentuk pemenuhan Tugas Akhir Mata Kuliah **Pemrograman Berbasis Web (KSI1412)**, Program Studi S1 Sistem Informasi, Fakultas Ilmu Komputer, Universitas Jember.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Dibuat oleh:** Husni Rasyid Bachrie (NIM: 242410101017)  
+**Demo Video:** [Masukkan Tautan YouTube Di Sini]  
+**Live Website:** [Masukkan Tautan Hosting Di Sini]
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📑 Daftar Isi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- [Fitur Utama](#-fitur-utama)
+- [Keunggulan Sistem (Standar RTM)](#-keunggulan-sistem-standar-rtm)
+- [Struktur Database](#-struktur-database)
+- [Persyaratan Sistem](#-persyaratan-sistem)
+- [Panduan Instalasi & Menjalankan Aplikasi](#-panduan-instalasi--menjalankan-aplikasi)
+- [Akun Akses Default](#-akun-akses-default-demo)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## ✨ Fitur Utama
 
-## Agentic Development
+Sistem ini memfasilitasi dua peran utama, yaitu Pengguna (Customer) dan Administrator:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 👤 Untuk Pelanggan (Customer)
+- **Katalog Interaktif:** Eksplorasi daftar ruangan dengan fitur pencarian instan (Live Search) tanpa perlu memuat ulang halaman.
+- **Smart Booking Wizard:** Formulir pemesanan multi-langkah interaktif dengan validasi jadwal otomatis untuk mencegah pemesanan ganda.
+- **Dynamic Music Widget:** Pemutar musik cerdas di halaman utama yang terintegrasi dengan iTunes API (Top 10 Pop Hits) dan dilengkapi visualisasi audio.
+- **Pengaturan Preferensi:** Fitur kustomisasi ukuran font dan tema antarmuka (Light Mode / Dark Mode) yang disimpan secara persisten.
+- **Riwayat Reservasi:** Pemantauan status pemesanan dan fitur unggah bukti pembayaran yang aman.
 
+### 🛡️ Untuk Administrator
+- **Dashboard Manajemen:** Ringkasan statistik kunjungan dan operasional bisnis.
+- **Manajemen Data Ruangan:** Fitur CRUD (Create, Read, Update, Delete) penuh untuk mengatur katalog ruangan, harga, kapasitas, tipe, hingga mengunggah foto interior.
+- **Kendali Ketersediaan:** Pengaturan status operasional ruangan (Aktif / Maintenance).
+- **Proses Reservasi:** Verifikasi bukti pembayaran dan pengelolaan persetujuan jadwal pelanggan.
+
+---
+
+## 🎯 Keunggulan Sistem (Standar RTM)
+
+Aplikasi SingSpace dikembangkan secara ketat dengan mematuhi standar pengembangan web modern:
+1. **HTML5 Semantik:** Penggunaan struktur tag yang bermakna (`<main>`, `<section>`, `<article>`) untuk menunjang aksesibilitas dan SEO.
+2. **Komunikasi Asinkronus (AJAX):** Implementasi Fetch API dengan algoritma *Debounce* pada pencarian dan jadwal untuk meringankan beban server, lengkap dengan *Loading Indicator* dan *Error Handling*.
+3. **Validasi Klien Tingkat Lanjut:** Integrasi *SweetAlert2* dengan desain *Glassmorphism* kustom untuk memvalidasi *input* formulir dan memberikan *feedback* yang informatif.
+4. **Proteksi Session & Middleware:** Pemisahan *Role-Based Access Control* yang ketat serta keamanan pengelolaan rute sistem.
+5. **Keamanan Database:** Semua kueri database dilindungi dari injeksi SQL melalui implementasi Eloquent ORM (*Prepared Statements*) Laravel.
+
+---
+
+## 🗄️ Struktur Database
+
+Aplikasi menggunakan database relasional (MySQL) dengan tabel utama sebagai berikut:
+1. `users`: Menyimpan data autentikasi pengguna dan peran akses (*role*).
+2. `ruangans`: Menyimpan entitas dan spesifikasi ruangan (nama, tipe, harga, foto, status).
+3. `reservasis`: Mencatat jejak transaksional, jadwal pemesanan, tagihan, dan file bukti pembayaran.
+4. `sessions`: Menyimpan manajemen sesi pengguna secara dinamis dan aman.
+
+---
+
+## 🚀 Panduan Instalasi & Menjalankan Aplikasi
+
+Ikuti panduan berikut untuk mengkonfigurasi dan menjalankan SingSpace di lingkungan lokal (*localhost*) Anda.
+
+### 1. Persyaratan Sistem
+Pastikan perangkat Anda telah terinstal perangkat lunak berikut:
+* **PHP** (Minimal versi 8.2)
+* **Composer** (Manajemen paket PHP)
+* **Node.js & NPM** (Kompilasi aset *frontend*)
+* **MySQL / MariaDB** (Disarankan menggunakan XAMPP atau Laragon)
+* **Git** (Untuk kloning repositori)
+
+### 2. Kloning Repositori
+Buka Terminal atau Command Prompt, lalu eksekusi perintah berikut:
 ```bash
-composer require laravel/boost --dev
+git clone <URL_REPOSITORI_GITHUB_ANDA>
+cd singspace
 
-php artisan boost:install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 3. Instalasi Dependensi (Backend & Frontend)
 
-## Contributing
+Unduh seluruh pustaka yang dibutuhkan oleh sistem:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+npm install
 
-## Code of Conduct
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Konfigurasi Environment
 
-## Security Vulnerabilities
+Salin file pengaturan bawaan aplikasi:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
 
-## License
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Buka file `.env` di *code editor* Anda (misal: VS Code) dan sesuaikan zona waktu serta kredensial *database* Anda:
+
+```env
+APP_TIMEZONE=Asia/Jakarta
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=singspace_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+```
+
+*(Catatan: Biarkan `DB_PASSWORD` kosong jika Anda menggunakan konfigurasi default dari XAMPP).*
+
+### 5. Generate Application Key
+
+Amankan sesi dan data terenkripsi aplikasi dengan perintah:
+
+```bash
+php artisan key:generate
+
+```
+
+### 6. Migrasi Database, Seeder, dan Storage Link
+
+Pastikan *service* MySQL di XAMPP/Laragon Anda sudah berjalan, lalu buat database kosong bernama `singspace_db` di *phpMyAdmin*.
+
+Setelah itu, jalankan perintah di bawah ini untuk membangun tabel, memasukkan data awal (*dummy*), dan menautkan direktori penyimpanan gambar:
+
+```bash
+php artisan migrate --seed
+php artisan storage:link
+
+```
+
+*(Penting: `storage:link` wajib dijalankan agar foto ruangan dan bukti transfer dapat ditampilkan dengan benar di browser).*
+
+### 7. Jalankan Server Lokal
+
+Untuk menjalankan aplikasi, Anda perlu membuka **dua tab Terminal** secara bersamaan di dalam folder proyek:
+
+**Terminal 1 (Untuk kompilasi aset CSS/JS):**
+
+```bash
+npm run dev
+
+```
+
+**Terminal 2 (Untuk menjalankan server Laravel):**
+
+```bash
+php artisan config:clear
+php artisan serve
+
+```
+
+### 8. Akses Aplikasi
+
+Setelah kedua proses di atas berjalan tanpa kendala, buka web browser Anda dan kunjungi:
+👉 **http://127.0.0.1:8000**
+
+---
+
+## 🔐 Akun Akses Default (Demo)
+
+Sistem telah dilengkapi dengan data *dummy* melalui proses *Seeder* untuk memudahkan pengujian. Anda dapat masuk menggunakan salah satu kredensial di bawah ini:
+
+| Peran (Role) | Alamat Email | Kata Sandi |
+| --- | --- | --- |
+| **Administrator** | `admin@singspace.com` | `password` |
+| **Pelanggan (Customer)** | `customer@singspace.com` | `password` |
+
+*(Anda juga dapat melakukan simulasi pendaftaran sebagai pelanggan baru melalui menu Registrasi pada aplikasi).*
+
+---
+
+*SingSpace - Elevating Your Karaoke Experience.*
