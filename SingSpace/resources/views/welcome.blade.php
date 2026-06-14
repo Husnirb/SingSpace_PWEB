@@ -79,7 +79,6 @@
     .stats-time { display: block; font-size: 1rem; font-weight: bold; color: #0f172a; margin-top: 8px; margin-bottom: 5px; }
     .stats-label { color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
 
-    /* Perintah Otomatis Saat Mode Gelap (.dark) Aktif */
     .dark .stats-footer, body.dark .stats-footer { background-color: #0f172a; border-top-color: #1e293b; }
     .dark .stats-card, body.dark .stats-card { background: rgba(30, 41, 59, 0.4); border-color: #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
     .dark .stats-title, body.dark .stats-title { color: #94a3b8; }
@@ -91,7 +90,7 @@
        7. WIDGET MUSIK (ADAPTIVE LIGHT/DARK)
        ========================================== */
     .widget-pill {
-        background: rgba(255, 255, 255, 0.85); /* Putih Kaca untuk Light Mode */
+        background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(0, 0, 0, 0.1);
@@ -108,39 +107,58 @@
     }
     .widget-pill:hover { transform: scale(1.03); border-color: rgba(249, 115, 22, 0.5); }
 
-    /* Text Color untuk Light Mode */
     .widget-loading-text { color: #475569; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; transition: color 0.3s; }
     .widget-text-label { color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; transition: color 0.3s; }
     .widget-text-title { color: #0f172a; font-size: 1.1rem; letter-spacing: 0.5px; white-space: nowrap; max-width: 150px; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: bottom; font-weight: 800; transition: color 0.3s; }
     .widget-text-oleh { color: #94a3b8; font-style: italic; transition: color 0.3s; }
     .widget-text-artist { color: #ea580c; font-weight: bold; white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: bottom; transition: color 0.3s; }
 
-    /* Perintah Otomatis Mode Gelap (.dark) untuk Widget */
-    .dark .widget-pill, body.dark .widget-pill {
-        background: rgba(15, 23, 42, 0.65); /* Biru Dongker Kaca untuk Dark Mode */
-        border-color: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
+    .dark .widget-pill, body.dark .widget-pill { background: rgba(15, 23, 42, 0.65); border-color: rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     .dark .widget-loading-text, body.dark .widget-loading-text { color: #cbd5e1; }
     .dark .widget-text-label, body.dark .widget-text-label { color: #94a3b8; }
     .dark .widget-text-title, body.dark .widget-text-title { color: #ffffff; }
     .dark .widget-text-oleh, body.dark .widget-text-oleh { color: #64748b; }
     .dark .widget-text-artist, body.dark .widget-text-artist { color: #38bdf8; }
 
-    /* ==========================================
-       8. ANIMASI VISUALISASI MUSIK
-       ========================================== */
-    @keyframes barAnimation {
-        0%, 100% { height: 2px; }
-        50% { height: 10px; }
+    /* Tombol Play/Pause */
+    .widget-play-btn {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        border: none; color: #fff; width: 40px; height: 40px;
+        border-radius: 50%; display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 0 12px rgba(249, 115, 22, 0.6); cursor: pointer;
+        transition: transform 0.2s; position: relative;
     }
-    .music-visualizer { display: flex; align-items: flex-end; gap: 2px; width: 20px; height: 10px; position: absolute; }
-    .music-bar { width: 3px; height: 2px; background-color: #ffffff; border-radius: 1px; transition: height 0.2s ease; }
-    .is-playing .music-bar { animation: barAnimation 1s ease-in-out infinite; }
-    .is-playing .music-bar:nth-child(1) { animation-delay: 0.1s; animation-duration: 1.1s; }
-    .is-playing .music-bar:nth-child(2) { animation-delay: 0.3s; animation-duration: 0.9s; }
-    .is-playing .music-bar:nth-child(3) { animation-delay: 0.2s; animation-duration: 1.0s; }
-    .is-playing .music-bar:nth-child(4) { animation-delay: 0.4s; animation-duration: 0.8s; }
+    .widget-play-btn:hover { transform: scale(1.1); }
+
+    /* ==========================================
+       8. ANIMASI VISUALISASI MUSIK (SOUNDWAVE)
+       ========================================== */
+    @keyframes soundwave {
+        0% { height: 3px; }
+        50% { height: 16px; }
+        100% { height: 3px; }
+    }
+    .music-visualizer {
+        display: none; /* Sembunyi saat dijeda */
+        align-items: center;
+        gap: 3px;
+        height: 16px;
+        margin-left: 8px;
+    }
+    .music-bar {
+        width: 4px;
+        background-color: #f97316;
+        border-radius: 2px;
+    }
+    .is-playing .music-visualizer { display: flex; }
+    .is-playing .music-bar { animation: soundwave 1s ease-in-out infinite; }
+    .is-playing .music-bar:nth-child(1) { animation-delay: 0.1s; animation-duration: 0.8s; }
+    .is-playing .music-bar:nth-child(2) { animation-delay: 0.3s; animation-duration: 1.1s; }
+    .is-playing .music-bar:nth-child(3) { animation-delay: 0.0s; animation-duration: 0.9s; }
+    .is-playing .music-bar:nth-child(4) { animation-delay: 0.2s; animation-duration: 1.2s; }
+
+    /* Warna soundwave berubah putih di Light Mode agar kontras */
+    body:not(.dark) .music-bar { background-color: #ea580c; }
 
     /* ==========================================
        9. MODAL TOP 10 STYLES
@@ -191,25 +209,26 @@
 
                 <div id="trending-loading" class="widget-loading-text">
                     <i class="fa-solid fa-circle-notch fa-spin" style="color: #f97316; font-size: 1.1rem;"></i>
-                    Menyinkronkan tangga lagu iTunes...
+                    Menyinkronkan tangga lagu iTunes Indonesia...
                 </div>
 
                 <div id="trending-result" style="display: none; align-items: center; gap: 12px; font-size: 0.95rem;">
 
-                    <button id="btn-play-top" onclick="toggleTopMusic(event)" style="background: linear-gradient(135deg, #f97316, #ea580c); border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 12px rgba(249, 115, 22, 0.6); cursor: pointer; transition: transform 0.2s; position: relative;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" aria-label="Play/Pause">
-                        <div class="music-visualizer">
-                            <span class="music-bar"></span>
-                            <span class="music-bar"></span>
-                            <span class="music-bar"></span>
-                            <span class="music-bar"></span>
-                        </div>
+                    <button id="btn-play-top" onclick="toggleTopMusic(event)" class="widget-play-btn" aria-label="Play/Pause">
+                        <i id="top-play-icon" class="fa-solid fa-play"></i>
                     </button>
-                    <i id="top-play-icon" class="fa-solid fa-play" style="color: #fff; font-size: 0.9rem; display: none;"></i>
 
                     <span class="widget-text-label">HITS:</span>
                     <strong id="t-title" class="widget-text-title"></strong>
                     <span class="widget-text-oleh">oleh</span>
                     <span id="t-artist" class="widget-text-artist"></span>
+
+                    <div class="music-visualizer" id="soundwave-anim">
+                        <span class="music-bar"></span>
+                        <span class="music-bar"></span>
+                        <span class="music-bar"></span>
+                        <span class="music-bar"></span>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -254,7 +273,7 @@
                         <i class="fa-solid fa-headphones-simple" style="color: #f97316; font-size: 1.8rem;"></i>
                     </div>
                     <h3 style="color: #fff; margin: 0; font-size: 1.6rem; font-weight: 900; letter-spacing: 1px;">Top 10 <span style="color: #f97316;">Hits</span></h3>
-                    <p style="color: #94a3b8; margin: 5px 0 0 0; font-size: 0.9rem;">Tangga lagu terpopuler di Indonesia saat ini</p>
+                    <p style="color: #94a3b8; margin: 5px 0 0 0; font-size: 0.9rem;">Tangga lagu Apple Music Indonesia saat ini</p>
                 </div>
                 <div id="trending-list-container" style="max-height: 45vh; overflow-y: auto; text-align: left; padding-right: 10px;">
                 </div>
@@ -312,6 +331,7 @@
                 const track = window.listLaguTop[index];
                 const audioTop = document.getElementById('audio-top-player');
                 const widgetAside = document.querySelector('.dynamic-island-music');
+                const playIcon = document.getElementById('top-play-icon');
 
                 document.getElementById('t-title').innerText = track['im:name'].label;
                 document.getElementById('t-artist').innerText = track['im:artist'].label;
@@ -325,9 +345,14 @@
                 if(pUrl) {
                     audioTop.src = pUrl;
                     try {
+                        // Mencoba Paksa Autoplay
                         await audioTop.play();
+                        playIcon.className = "fa-solid fa-pause";
                         widgetAside.classList.add('is-playing');
                     } catch(e) {
+                        // Jika dicegah browser, biarkan user klik tombol play sendiri
+                        console.warn("Autoplay dicegah oleh browser. User harus menekan tombol Play.");
+                        playIcon.className = "fa-solid fa-play";
                         widgetAside.classList.remove('is-playing');
                     }
                 } else {
@@ -339,12 +364,15 @@
                 event.stopPropagation();
                 const audioTop = document.getElementById('audio-top-player');
                 const widgetAside = document.querySelector('.dynamic-island-music');
+                const playIcon = document.getElementById('top-play-icon');
 
                 if(audioTop.paused) {
                     audioTop.play();
+                    playIcon.className = "fa-solid fa-pause";
                     widgetAside.classList.add('is-playing');
                 } else {
                     audioTop.pause();
+                    playIcon.className = "fa-solid fa-play";
                     widgetAside.classList.remove('is-playing');
                 }
             }
@@ -477,7 +505,9 @@
         </a>
     </section>
 
-</main> <footer class="stats-footer">
+</main>
+
+<footer class="stats-footer">
     <div class="stats-card">
         <h4 class="stats-title">
             <i class="fa-solid fa-chart-simple" style="color: #f97316; margin-right: 8px;"></i> Statistik Kunjungan Publik
