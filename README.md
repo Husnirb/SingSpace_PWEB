@@ -11,7 +11,7 @@
 Website ini dikembangkan sebagai bentuk pemenuhan Tugas Akhir Mata Kuliah **Pemrograman Berbasis Web (KSI1412)**, Program Studi S1 Sistem Informasi, Fakultas Ilmu Komputer, Universitas Jember.
 
 **Dibuat oleh:** Husni Rasyid Bachrie (NIM: 242410101005)  
-**Demo Video:** []  
+**Demo Video:** [[Demo Website](https://youtu.be/B-cJRSthzSg)]  
 **Website:** [[Singspace](https://singspacepweb-production.up.railway.app/)]
 
 ---
@@ -19,7 +19,7 @@ Website ini dikembangkan sebagai bentuk pemenuhan Tugas Akhir Mata Kuliah **Pemr
 ## 📑 Daftar Isi
 
 - [Fitur Utama](#-fitur-utama)
-- [Keunggulan Sistem (Standar RTM)](#-keunggulan-sistem-standar-rtm)
+- [Keunggulan Sistem](#-keunggulan-sistem)
 - [Struktur Database](#-struktur-database)
 - [Persyaratan Sistem](#-persyaratan-sistem)
 - [Panduan Instalasi & Menjalankan Website](#-panduan-instalasi--menjalankan-Website)
@@ -46,7 +46,7 @@ Sistem ini memfasilitasi dua peran utama, yaitu Pengguna (Customer) dan Administ
 
 ---
 
-## 🎯 Keunggulan Sistem (Standar RTM)
+## 🎯 Keunggulan Sistem
 
 Website SingSpace dikembangkan secara ketat dengan mematuhi standar pengembangan web modern:
 1. **HTML5 Semantik:** Penggunaan struktur tag yang bermakna (`<main>`, `<section>`, `<article>`) untuk menunjang aksesibilitas dan SEO.
